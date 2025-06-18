@@ -3,6 +3,13 @@ services:
     name: medical-prediction-app
     env: docker
     dockerfilePath: ./Dockerfile
+    plan: free
+    buildFilter:
+      paths:
+        - Dockerfile
+        - requirements.txt
+        - backend.py
+        - *.sav
     envVars:
       - key: GOOGLE_API_KEY
         sync: false
