@@ -31,36 +31,40 @@ except Exception as e:
 
 # --- LOAD ML MODELS ---
 try:
+    import numpy as np
+    import pickle
+    import joblib
+    from sklearn.base import BaseEstimator
+
+    def load_model_safely(model_path):
+        try:
+            with open(model_path, 'rb') as f:
+                return pickle.load(f)
+        except Exception as e:
+            print(f"Pickle load failed: {e}")
+            try:
+                return joblib.load(model_path)
+            except Exception as e:
+                print(f"Joblib load failed: {e}")
+                raise
+
     model_path = os.path.join(os.path.dirname(__file__), 'heart_model.sav')
-    with open(model_path, 'rb') as f:
-        hdmodel = pickle.load(f)
+    hdmodel = load_model_safely(model_path)
     
     diabetes_model_path = os.path.join(os.path.dirname(__file__), 'diabetes_model.sav')
-    with open(diabetes_model_path, 'rb') as f:
-        diabetesmodel = pickle.load(f)
+    diabetesmodel = load_model_safely(diabetes_model_path)
     
     cancer_model_path = os.path.join(os.path.dirname(__file__), 'cancer_model.sav')
-    with open(cancer_model_path, 'rb') as f:
-        cancersmodel = pickle.load(f)
+    cancersmodel = load_model_safely(cancer_model_path)
     
     covid_model_path = os.path.join(os.path.dirname(__file__), 'covid_model (1).sav')
-    with open(covid_model_path, 'rb') as f:
-        covidmodel = pickle.load(f)
+    covidmodel = load_model_safely(covid_model_path)
     
     print("All prediction models loaded successfully.")
 except Exception as e:
     print(f"Error loading models: {e}")
-    print("Attempting to load models with compatibility mode...")
-    try:
-        import joblib
-        hdmodel = joblib.load(model_path)
-        diabetesmodel = joblib.load(diabetes_model_path)
-        cancersmodel = joblib.load(cancer_model_path)
-        covidmodel = joblib.load(covid_model_path)
-        print("Models loaded successfully using joblib.")
-    except Exception as e:
-        print(f"Failed to load models: {e}")
-        exit(1)
+    print("Stack trace:", e.__traceback__)
+    exit(1)
 
 
 # --- STATE MANAGEMENT FOR CONVERSATIONAL PREDICTION ---

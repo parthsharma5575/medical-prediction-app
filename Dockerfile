@@ -15,9 +15,9 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 COPY requirements.txt .
 
 # Install Python dependencies with specific order
-RUN pip install --no-cache-dir numpy==1.24.3 && \
-    pip install --no-cache-dir scipy==1.10.1 && \
-    pip install --no-cache-dir scikit-learn==1.3.0 && \
+RUN pip install --no-cache-dir numpy==1.20.3 && \
+    pip install --no-cache-dir scipy==1.7.3 && \
+    pip install --no-cache-dir scikit-learn==0.24.2 && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application
@@ -31,6 +31,7 @@ ENV FLASK_ENV=production
 ENV PYTHONPATH=/app
 ENV PYTHONHASHSEED=1
 ENV PYTHONIOENCODING=utf-8
+ENV MPLCONFIGDIR=/tmp/matplotlib
 
 # Expose the port
 EXPOSE ${PORT}
