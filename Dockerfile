@@ -14,11 +14,11 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt .
 
-# Install Python dependencies with specific order
-RUN pip install --no-cache-dir numpy==1.20.3 && \
-    pip install --no-cache-dir scipy==1.7.3 && \
-    pip install --no-cache-dir scikit-learn==0.24.2 && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt && \
+    python -c "import numpy; print('NumPy version:', numpy.__version__)" && \
+    python -c "import scipy; print('SciPy version:', scipy.__version__)" && \
+    python -c "import sklearn; print('scikit-learn version:', sklearn.__version__)"
 
 # Copy the rest of the application
 COPY . .

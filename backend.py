@@ -6,6 +6,9 @@ import os
 import google.generativeai as genai
 import requests
 from geopy.distance import geodesic
+import sys
+import scipy
+import sklearn
 
 ### NEW IMPORTS for the Hospital Finder feature ###
 
@@ -31,39 +34,50 @@ except Exception as e:
 
 # --- LOAD ML MODELS ---
 try:
-    import numpy as np
-    import pickle
-    import joblib
-    from sklearn.base import BaseEstimator
+    print("Python version:", sys.version)
+    print("NumPy version:", np.__version__)
+    print("SciPy version:", scipy.__version__)
+    print("scikit-learn version:", sklearn.__version__)
 
     def load_model_safely(model_path):
         try:
+            print(f"Attempting to load model from {model_path}")
             with open(model_path, 'rb') as f:
-                return pickle.load(f)
+                model = pickle.load(f)
+                print(f"Successfully loaded model using pickle")
+                return model
         except Exception as e:
-            print(f"Pickle load failed: {e}")
+            print(f"Pickle load failed: {str(e)}")
             try:
-                return joblib.load(model_path)
+                model = joblib.load(model_path)
+                print(f"Successfully loaded model using joblib")
+                return model
             except Exception as e:
-                print(f"Joblib load failed: {e}")
+                print(f"Joblib load failed: {str(e)}")
                 raise
 
     model_path = os.path.join(os.path.dirname(__file__), 'heart_model.sav')
+    print(f"Loading heart model from: {model_path}")
     hdmodel = load_model_safely(model_path)
     
     diabetes_model_path = os.path.join(os.path.dirname(__file__), 'diabetes_model.sav')
+    print(f"Loading diabetes model from: {diabetes_model_path}")
     diabetesmodel = load_model_safely(diabetes_model_path)
     
     cancer_model_path = os.path.join(os.path.dirname(__file__), 'cancer_model.sav')
+    print(f"Loading cancer model from: {cancer_model_path}")
     cancersmodel = load_model_safely(cancer_model_path)
     
     covid_model_path = os.path.join(os.path.dirname(__file__), 'covid_model (1).sav')
+    print(f"Loading covid model from: {covid_model_path}")
     covidmodel = load_model_safely(covid_model_path)
     
     print("All prediction models loaded successfully.")
 except Exception as e:
-    print(f"Error loading models: {e}")
+    print(f"Error loading models: {str(e)}")
     print("Stack trace:", e.__traceback__)
+    import traceback
+    traceback.print_exc()
     exit(1)
 
 
