@@ -32,17 +32,35 @@ except Exception as e:
 # --- LOAD ML MODELS ---
 try:
     model_path = os.path.join(os.path.dirname(__file__), 'heart_model.sav')
-    hdmodel = pickle.load(open(model_path, 'rb'))
+    with open(model_path, 'rb') as f:
+        hdmodel = pickle.load(f)
+    
     diabetes_model_path = os.path.join(os.path.dirname(__file__), 'diabetes_model.sav')
-    diabetesmodel = pickle.load(open(diabetes_model_path, 'rb'))
+    with open(diabetes_model_path, 'rb') as f:
+        diabetesmodel = pickle.load(f)
+    
     cancer_model_path = os.path.join(os.path.dirname(__file__), 'cancer_model.sav')
-    cancersmodel = pickle.load(open(cancer_model_path, 'rb'))
+    with open(cancer_model_path, 'rb') as f:
+        cancersmodel = pickle.load(f)
+    
     covid_model_path = os.path.join(os.path.dirname(__file__), 'covid_model (1).sav')
-    covidmodel = pickle.load(open(covid_model_path, 'rb'))
+    with open(covid_model_path, 'rb') as f:
+        covidmodel = pickle.load(f)
+    
     print("All prediction models loaded successfully.")
-except FileNotFoundError as e:
-    print(f"Error loading models: {e}. Make sure all .sav files are in the same directory.")
-    exit() # Exit if models can't be loaded
+except Exception as e:
+    print(f"Error loading models: {e}")
+    print("Attempting to load models with compatibility mode...")
+    try:
+        import joblib
+        hdmodel = joblib.load(model_path)
+        diabetesmodel = joblib.load(diabetes_model_path)
+        cancersmodel = joblib.load(cancer_model_path)
+        covidmodel = joblib.load(covid_model_path)
+        print("Models loaded successfully using joblib.")
+    except Exception as e:
+        print(f"Failed to load models: {e}")
+        exit(1)
 
 
 # --- STATE MANAGEMENT FOR CONVERSATIONAL PREDICTION ---

@@ -15,9 +15,9 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 COPY requirements.txt .
 
 # Install Python dependencies with specific order
-RUN pip install --no-cache-dir numpy==1.19.5 && \
-    pip install --no-cache-dir scipy==1.7.3 && \
-    pip install --no-cache-dir scikit-learn==0.24.2 && \
+RUN pip install --no-cache-dir numpy==1.24.3 && \
+    pip install --no-cache-dir scipy==1.10.1 && \
+    pip install --no-cache-dir scikit-learn==1.3.0 && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application
@@ -30,9 +30,10 @@ ENV FLASK_APP=backend.py
 ENV FLASK_ENV=production
 ENV PYTHONPATH=/app
 ENV PYTHONHASHSEED=1
+ENV PYTHONIOENCODING=utf-8
 
 # Expose the port
 EXPOSE ${PORT}
 
 # Run the application with specific worker configuration
-CMD gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 2 --timeout 120 --worker-class gthread backend:app 
+CMD gunicorn --bind 0.0.0.0:${PORT} --workers 1 --threads 2 --timeout 120 --worker-class gthread --preload backend:app 
