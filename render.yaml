@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: medical-prediction-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn backend:app
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false

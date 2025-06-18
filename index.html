@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IllnessInsight Dashboard</title>
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dark Mode Toggle -->
+        <button id="dark-mode-toggle" class="dark-mode-toggle">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-logo">
+                <img src="medical-icon.svg" alt="IllnessInsight Logo">
+            </div>
+            <h1 class="sidebar-title">IllnessInsight</h1>
+            <ul>
+                <li><a href="#" class="nav-link active" data-view="home"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#" class="nav-link" data-view="heart"><i class="fas fa-heartbeat"></i> Heart Disease</a></li>
+                <li><a href="#" class="nav-link" data-view="diabetes"><i class="fas fa-tint"></i> Diabetes</a></li>
+                <li><a href="#" class="nav-link" data-view="cancer"><i class="fas fa-ribbon"></i> Cancer</a></li>
+                <li><a href="#" class="nav-link" data-view="covid"><i class="fas fa-virus"></i> COVID-19</a></li>
+                <li><a href="#" class="nav-link" data-view="chat"><i class="fas fa-comments"></i> Chat Assistance</a></li>
+                <li><a href="#" class="nav-link" data-view="hospitals"><i class="fas fa-hospital"></i> Find Hospitals</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Made by-Team Outlier Coders</p>
+                <p>Version 1.0</p>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Home/About View -->
+            <div id="home-view" class="view active-view">
+                <h2>About the Project: IllnessInsight</h2>
+                <p>Welcome to <strong>IllnessInsight</strong>, an innovative, AI-powered platform designed to assist users in predicting the likelihood of various diseases based on their health parameters. This project leverages advanced machine learning models and cutting-edge generative AI technology to provide accurate predictions and personalized assistance.</p>
+                <h3>Key Features:</h3>
+                <ul>
+                    <li>✅ <strong>Disease Prediction:</strong> Analyze critical health metrics to predict the risk of Heart Disease, Diabetes, Cancer, and COVID-19.</li>
+                    <li>✅ <strong>AI-Powered Chat Assistance:</strong> Powered by Google's Gemini AI, this feature acts as your virtual healthcare assistant.</li>
+                    <li>✅ <strong>Nearby Hospital Finder:</strong> Instantly locate hospitals and clinics near you using your device's location.</li>
+                </ul>
+            </div>
+
+            <!-- Disease Prediction View -->
+            <div id="prediction-view" class="view">
+                <h2 id="prediction-title"></h2>
+                <p id="prediction-description"></p>
+                
+                <div id="prediction-form-container" class="form-grid"></div>
+                <button id="predict-form-btn" class="btn-predict">Predict from Form</button>
+                <div id="prediction-result" class="result-box"></div>
+
+                <div class="divider">OR</div>
+
+                <div id="chat-prediction-container">
+                    <button id="predict-chat-btn" class="btn-chat">Start Guided Chat Prediction</button>
+                    <div id="chat-prediction-box" class="chat-box hidden"></div>
+                    <div id="chat-prediction-input-area" class="input-area hidden">
+                        <p id="chat-question-text"></p>
+                        <input type="number" id="chat-user-input" placeholder="Enter value..." step="any">
+                        <button id="chat-submit-answer">Send</button>
+                    </div>
+                    <div id="chat-prediction-result" class="result-box"></div>
+                </div>
+            </div>
+
+            <!-- General Chat Assistance View -->
+            <div id="chat-view" class="view">
+                <h2>Healthcare Assistant</h2>
+                <div id="gemini-chat-history" class="chat-history">
+                    <div class="message bot-message">Hello! I'm your Health assistant. Ask me about health tips or diseases!</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="gemini-chat-input" placeholder="Type your question...">
+                    <button id="gemini-chat-send"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <!-- Find Hospitals View -->
+            <div id="hospitals-view" class="view">
+                <h2>Find Nearby Hospitals</h2>
+                <p>Locate medical facilities near your current location.</p>
+                <div class="hospital-controls">
+                    <label for="radius-slider">Search Radius (km): <span id="radius-value">5</span> km</label>
+                    <input type="range" id="radius-slider" min="1" max="50" value="5">
+                    <button id="find-hospitals-btn" class="btn-primary">
+                        <i class="fas fa-map-marker-alt"></i> Find Hospitals
+                    </button>
+                </div>
+                <div id="map"></div>
+                <div id="hospital-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- External JS Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
