@@ -2,7 +2,7 @@ services:
   - type: web
     name: medical-prediction-app
     env: python
-    pythonVersion: 3.9.16
+    pythonVersion: 3.9.7
     buildCommand: |
       python -m pip install --upgrade pip
       pip install setuptools wheel
