@@ -1,4 +1,4 @@
-FROM python:3.9.7-slim
+FROM python:3.9.16-slim
 
 WORKDIR /app
 
@@ -9,13 +9,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip and install build tools
-RUN python -m pip install --no-cache-dir --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Copy requirements first to leverage Docker cache
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies with specific order
+RUN pip install --no-cache-dir werkzeug==2.0.3 && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application
 COPY . .
@@ -25,9 +26,10 @@ ENV PORT=10000
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=backend.py
 ENV FLASK_ENV=production
+ENV PYTHONPATH=/app
 
 # Expose the port
-EXPOSE $PORT
+EXPOSE ${PORT}
 
-# Run the application
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 4 --threads 2 --timeout 120 backend:app 
+# Run the application with specific worker configuration
+CMD gunicorn --bind 0.0.0.0:${PORT} --workers 2 --threads 2 --timeout 120 --worker-class gthread backend:app 
