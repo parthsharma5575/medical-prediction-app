@@ -3,11 +3,13 @@ services:
     name: medical-prediction-app
     env: python
     pythonVersion: 3.9.7
+    rootDir: .
     buildCommand: |
-      python -m pip install --upgrade pip
-      pip install setuptools wheel
+      python -m pip install --upgrade pip setuptools wheel
       pip install -r requirements.txt
-    startCommand: gunicorn backend:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT backend:app
     envVars:
       - key: GOOGLE_API_KEY
         sync: false
+      - key: PORT
+        value: 10000
